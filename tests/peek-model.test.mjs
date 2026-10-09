@@ -129,3 +129,11 @@ test("keys: releasing SUPER or Z, or pressing Escape, closes the peek", () => {
   assert.equal(M.closesPeek(K.z, "press"), false);      // auto-repeat of the held Z must not close it
   assert.equal(M.closesPeek(K.superL, "press"), false);
 });
+
+test("settings: toggling the flash keeps other settings and writes valid JSON", () => {
+  const off = M.toggleFlash(M.parseSettings('{"flashDuration": 1500}'));
+  assert.deepEqual(plain(off), { flashOnSwitch: false, flashDuration: 1500 });
+  assert.deepEqual(plain(M.parseSettings(M.settingsJson(off))), { flashOnSwitch: false, flashDuration: 1500 });
+  assert.equal(M.toggleFlash(off).flashOnSwitch, true);
+  assert.match(M.settingsJson(off), /\n$/);
+});

@@ -9,6 +9,7 @@ on a multi-monitor [Hyprland](https://hypr.land) desk.
   workspace number, its workspaces and the apps on them. Let go of `SUPER` or
   `Z` (in any order), or press `Esc`, to hide it.
 - **Switch workspaces** and the new number flashes on screen for a moment.
+  Don't like it? Turn it off with one key (see below).
 - **Click a workspace** in the card to go there.
 
 ![Screenshot](docs/screenshot.png)
@@ -37,7 +38,14 @@ hl.bind("SUPER + Z", hl.dsp.exec_cmd([[omarchy-shell shell summon evertonlm.work
 hl.bind("SUPER + Z", hl.dsp.exec_cmd("omarchy-shell shell hide evertonlm.workspace-peek"), { release = true, description = "Hide workspace peek" })
 ```
 
-`SUPER + Z` is free on a stock Omarchy. Check `omarchy menu keybindings --print`
+Optional: turn the flash on workspace switch on and off with `SUPER + SHIFT + Z`
+(an on-screen message shows the new state, and it is saved):
+
+```lua
+hl.bind("SUPER + SHIFT + Z", hl.dsp.exec_cmd("omarchy-shell shell call evertonlm.workspace-peek toggleFlash x"), { description = "Toggle workspace flash on switch" })
+```
+
+`SUPER + Z` and `SUPER + SHIFT + Z` are free on a stock Omarchy. Check `omarchy menu keybindings --print`
 before picking another key.
 
 Optional: switch workspaces with **`SUPER` + numpad** as well (stock Omarchy only
@@ -57,7 +65,8 @@ end
 
 ## Settings
 
-Optional file: `~/.config/workspace-peek/settings.json` (reloads on save).
+Optional file: `~/.config/workspace-peek/settings.json` (reloads on save; the
+`toggleFlash` command writes it for you).
 
 ```json
 {
@@ -77,6 +86,7 @@ Optional file: `~/.config/workspace-peek/settings.json` (reloads on save).
 omarchy-shell shell summon evertonlm.workspace-peek '{"mode":"peek"}'   # show the card
 omarchy-shell shell summon evertonlm.workspace-peek '{"mode":"flash"}'  # flash the numbers
 omarchy-shell shell hide evertonlm.workspace-peek
+omarchy-shell shell call evertonlm.workspace-peek toggleFlash x         # flash on switch: on <-> off
 omarchy-shell shell call evertonlm.workspace-peek state x               # closed | peek | flash
 ```
 
@@ -97,7 +107,7 @@ tests/                 node:test unit tests + a live check script
 ```bash
 node --test tests/*.test.mjs  # unit tests, no Omarchy needed (also run in CI)
 tests/live-check.sh         # against a running Omarchy session
-tests/live-check.sh --switch  # also tests the flash on a real workspace switch
+tests/live-check.sh --switch  # also tests the flash (on and off) on a real workspace switch
 ```
 
 To hack on it, link your clone into the plugin folder:

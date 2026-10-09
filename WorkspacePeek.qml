@@ -44,6 +44,19 @@ Item {
   // "closed", "peek" or "flash"; handy for scripts: omarchy-shell shell call evertonlm.workspace-peek state ""
   function state() { return root.opened ? root.mode : "closed" }
 
+  readonly property string settingsPath: Quickshell.env("HOME") + "/.config/workspace-peek/settings.json"
+
+  // Turns the flash on workspace switch on/off and saves it; returns "on" or "off".
+  //   omarchy-shell shell call evertonlm.workspace-peek toggleFlash x
+  function toggleFlash() {
+    root.settings = PeekModel.toggleFlash(root.settings)
+    Quickshell.execDetached(["sh", "-c", 'mkdir -p "$(dirname "$1")" && printf "%s" "$2" > "$1"',
+      "sh", root.settingsPath, PeekModel.settingsJson(root.settings)])
+    var state = root.settings.flashOnSwitch ? "on" : "off"
+    Quickshell.execDetached(["omarchy", "osd", "-m", "Workspace flash " + state, "-d", "1200"])
+    return state
+  }
+
   function refresh() {
     fetch.running = false
     fetch.running = true
@@ -83,7 +96,7 @@ Item {
   }
 
   FileView {
-    path: Quickshell.env("HOME") + "/.config/workspace-peek/settings.json"
+    path: root.settingsPath
     watchChanges: true
     printErrors: false
     onLoaded: root.settings = PeekModel.parseSettings(text())
@@ -104,6 +117,7 @@ Item {
     function peek(): string { root.open('{"mode":"peek"}'); return "ok" }
     function flash(): string { root.open('{"mode":"flash"}'); return "ok" }
     function close(): string { root.close(); return "ok" }
+    function toggleFlash(): string { return root.toggleFlash() }
     function state(): string { return root.state() }
   }
 

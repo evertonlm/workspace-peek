@@ -32,11 +32,25 @@ sleep 0.5
 check "flash hides itself" closed "$(state)"
 
 if [[ "${1:-}" == "--switch" ]]; then
+  settings="$HOME/.config/workspace-peek/settings.json"
+  flash_is() { jq -r 'if .flashOnSwitch == false then "off" else "on" end' "$settings" 2>/dev/null || echo on; }
+  set_flash() { [[ $(flash_is) == "$1" ]] || omarchy-shell shell call "$ID" toggleFlash x >/dev/null; sleep 0.5; }
+  original=$(flash_is)
   current=$(hyprctl activeworkspace -j | jq -r .id)
   target=$(( current == 9 ? 8 : 9 ))
-  hyprctl dispatch "hl.dsp.focus({ workspace = \"$target\" })" >/dev/null; sleep 0.4
+  switch_to() { hyprctl dispatch "hl.dsp.focus({ workspace = \"$1\" })" >/dev/null; }
+
+  set_flash on
+  switch_to "$target"; sleep 0.4
   check "flash on workspace switch" flash "$(state)"
-  hyprctl dispatch "hl.dsp.focus({ workspace = \"$current\" })" >/dev/null; sleep 1.2
+  switch_to "$current"; sleep 1.2
+
+  set_flash off
+  switch_to "$target"; sleep 0.4
+  check "no flash when turned off" closed "$(state)"
+  switch_to "$current"; sleep 0.3
+
+  set_flash "$original"
 fi
 
 [[ $fails -eq 0 ]] && echo "all live checks passed" || { echo "$fails live check(s) failed"; exit 1; }

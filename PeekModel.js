@@ -167,3 +167,11 @@ function closesPeek(key, type) {
   if (type === "release") return RELEASE_CLOSES.indexOf(key) !== -1
   return false
 }
+
+function toggleFlash(settings) {
+  return { flashOnSwitch: !settings.flashOnSwitch, flashDuration: settings.flashDuration }
+}
+
+function settingsJson(settings) {
+  return JSON.stringify({ flashOnSwitch: settings.flashOnSwitch, flashDuration: settings.flashDuration }, null, 2) + "\n"
+}
