@@ -156,3 +156,14 @@ function parseSettings(json) {
     flashDuration: isFinite(duration) && duration > 0 ? duration : FLASH_DURATION
   }
 }
+
+// Qt key codes. While the card is open it holds keyboard focus, so it sees the
+// key releases itself: whichever of SUPER or Z is let go first closes it.
+var KEY_ESCAPE = 0x01000000
+var RELEASE_CLOSES = [0x01000022 /* Meta */, 0x01000053 /* Super_L */, 0x01000054 /* Super_R */, 0x5a /* Z */]
+
+function closesPeek(key, type) {
+  if (type === "press") return key === KEY_ESCAPE
+  if (type === "release") return RELEASE_CLOSES.indexOf(key) !== -1
+  return false
+}

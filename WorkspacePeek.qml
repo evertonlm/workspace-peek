@@ -117,7 +117,11 @@ Item {
 
       readonly property var monitor: root.monitorFor(modelData.name)
       readonly property bool isFocused: monitor !== null && monitor.focused
-      readonly property bool showCard: root.peeking && isFocused
+      readonly property bool showCard: root.peeking
+      // The focused monitor's card takes the keyboard while open, so it sees
+      // SUPER/Z being released in any order (a Hyprland release bind only
+      // fires when the whole combo is released in order).
+      readonly property bool grabsKeys: root.peeking && isFocused
 
       visible: root.opened && monitor !== null
       anchors { top: true; bottom: true; left: true; right: true }
@@ -125,9 +129,21 @@ Item {
       exclusionMode: ExclusionMode.Ignore
       WlrLayershell.namespace: "workspace-peek"
       WlrLayershell.layer: WlrLayer.Overlay
-      WlrLayershell.keyboardFocus: WlrKeyboardFocus.None
+      WlrLayershell.keyboardFocus: grabsKeys ? WlrKeyboardFocus.Exclusive : WlrKeyboardFocus.None
       // Only the card takes clicks; everything else passes through.
       mask: Region { item: win.showCard ? card : null }
+
+      Item {
+        id: keyCatcher
+        focus: win.grabsKeys
+        Keys.onPressed: function(event) {
+          if (PeekModel.closesPeek(event.key, "press")) { root.close(); event.accepted = true }
+        }
+        Keys.onReleased: function(event) {
+          if (!event.isAutoRepeat && PeekModel.closesPeek(event.key, "release")) { root.close(); event.accepted = true }
+        }
+      }
+      onGrabsKeysChanged: if (grabsKeys) keyCatcher.forceActiveFocus()
 
       // Big workspace number, centered on every monitor.
       BorderSurface {
@@ -269,7 +285,7 @@ Item {
           Text {
             anchors.horizontalCenter: parent.horizontalCenter
             textFormat: Text.PlainText
-            text: "Click a workspace, or press SUPER + number"
+            text: "Click a workspace · release SUPER or press Esc to close"
             font.family: Style.font.family
             font.pixelSize: Style.font.caption
             color: Util.alpha(Color.popups.text, 0.5)

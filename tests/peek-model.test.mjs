@@ -117,3 +117,15 @@ test("settings: defaults, overrides and bad values", () => {
   assert.deepEqual(plain(M.parseSettings('{"flashOnSwitch": "no", "flashDuration": 0}')), { flashOnSwitch: true, flashDuration: 900 });
   assert.deepEqual(plain(M.parseSettings("{oops")), { flashOnSwitch: true, flashDuration: 900 });
 });
+
+test("keys: releasing SUPER or Z, or pressing Escape, closes the peek", () => {
+  const K = { escape: 0x01000000, meta: 0x01000022, superL: 0x01000053, superR: 0x01000054, z: 0x5a, a: 0x41 };
+  assert.equal(M.closesPeek(K.superL, "release"), true);
+  assert.equal(M.closesPeek(K.superR, "release"), true);
+  assert.equal(M.closesPeek(K.meta, "release"), true);
+  assert.equal(M.closesPeek(K.z, "release"), true);
+  assert.equal(M.closesPeek(K.escape, "press"), true);
+  assert.equal(M.closesPeek(K.a, "release"), false);
+  assert.equal(M.closesPeek(K.z, "press"), false);      // auto-repeat of the held Z must not close it
+  assert.equal(M.closesPeek(K.superL, "press"), false);
+});

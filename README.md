@@ -5,9 +5,9 @@
 An [Omarchy](https://omarchy.org) shell plugin that shows **where you are**
 on a multi-monitor [Hyprland](https://hypr.land) desk.
 
-- **Hold `SUPER + Z`** to see the workspace number on every monitor. A card on
-  the focused monitor lists each monitor's workspaces and the apps on them.
-  Release the keys to hide it.
+- **Hold `SUPER + Z`** to see a card on every monitor with each monitor's
+  workspace number, its workspaces and the apps on them. Let go of `SUPER` or
+  `Z` (in any order), or press `Esc`, to hide it.
 - **Switch workspaces** and the new number flashes on screen for a moment.
 - **Click a workspace** in the card to go there.
 
@@ -80,8 +80,10 @@ omarchy-shell shell hide evertonlm.workspace-peek
 omarchy-shell shell call evertonlm.workspace-peek state x               # closed | peek | flash
 ```
 
-As a safety net, the card hides itself after 10 seconds, in case a key
-release is missed.
+While open, the card on the focused monitor holds the keyboard, so it sees
+`SUPER` or `Z` being released in any order. (A Hyprland release bind alone only
+fires when the whole combo is released in order.) As a last safety net, the
+card hides itself after 10 seconds.
 
 ## Development
 
