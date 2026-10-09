@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 0.2.0 — 2026-10-09
 
 - `toggleFlash` command turns the flash on workspace switch on or off, saves it
   to `settings.json` and shows the new state on screen. Suggested key:
