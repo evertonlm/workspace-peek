@@ -1,0 +1,25 @@
+{
+  "monitors": [
+    { "id": 1, "name": "HDMI-A-1", "make": "Dell Inc.", "model": "DELL P2319H", "x": 2048, "y": 100, "focused": false,
+      "activeWorkspace": { "id": 2, "name": "2" } },
+    { "id": 0, "name": "eDP-2", "make": "BOE", "model": "0x0B87", "x": 0, "y": 0, "focused": true,
+      "activeWorkspace": { "id": 1, "name": "1" } }
+  ],
+  "workspaces": [
+    { "id": 3, "name": "3", "monitor": "eDP-2", "windows": 1 },
+    { "id": 1, "name": "1", "monitor": "eDP-2", "windows": 1 },
+    { "id": 2, "name": "2", "monitor": "HDMI-A-1", "windows": 2 },
+    { "id": 4, "name": "4", "monitor": "HDMI-A-1", "windows": 2 },
+    { "id": -98, "name": "special:scratchpad", "monitor": "eDP-2", "windows": 1 }
+  ],
+  "clients": [
+    { "class": "chrome-web.whatsapp.com__-Default", "title": "WhatsApp", "workspace": { "id": 1, "name": "1" }, "mapped": true, "hidden": false },
+    { "class": "foot", "title": "~/code", "workspace": { "id": 2, "name": "2" }, "mapped": true, "hidden": false },
+    { "class": "foot", "title": "htop", "workspace": { "id": 2, "name": "2" }, "mapped": true, "hidden": false },
+    { "class": "chromium", "title": "Example page", "workspace": { "id": 3, "name": "3" }, "mapped": true, "hidden": false },
+    { "class": "org.gnome.Nautilus", "title": "Downloads", "workspace": { "id": 4, "name": "4" }, "mapped": true, "hidden": false },
+    { "class": "Spotify", "title": "Spotify", "workspace": { "id": 4, "name": "4" }, "mapped": true, "hidden": false },
+    { "class": "foot", "title": "notes", "workspace": { "id": -98, "name": "special:scratchpad" }, "mapped": true, "hidden": false },
+    { "class": "", "title": "", "workspace": { "id": 3, "name": "3" }, "mapped": false, "hidden": false }
+  ]
+}

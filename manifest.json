@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "id": "evertonlm.workspace-peek",
+  "name": "Workspace peek",
+  "version": "0.1.0",
+  "author": "Everton L. Moreira",
+  "description": "Hold a key to see every monitor's workspace number and the apps on each workspace; flashes the number when you switch.",
+  "kinds": ["panel"],
+  "keepLoaded": true,
+  "entryPoints": {
+    "panel": "WorkspacePeek.qml"
+  }
+}
