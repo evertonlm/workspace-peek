@@ -95,7 +95,7 @@ tests/                 node:test unit tests + a live check script
 ```
 
 ```bash
-node --test tests/          # unit tests, no Omarchy needed (also run in CI)
+node --test tests/*.test.mjs  # unit tests, no Omarchy needed (also run in CI)
 tests/live-check.sh         # against a running Omarchy session
 tests/live-check.sh --switch  # also tests the flash on a real workspace switch
 ```
